@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="ca" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nucli Tecnològic - Història d'Espanya PAU</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            800: '#1e3a8a',
+                            900: '#0f172a'
+                        },
+                        amberCustom: '#d97706'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-active { border-bottom: 3px solid #2563eb; color: #2563eb; font-weight: 700; }
+        .dark .tab-active { border-bottom: 3px solid #60a5fa; color: #60a5fa; }
+        .subtab-active { background-color: #2563eb; color: white; }
+        .dark .subtab-active { background-color: #3b82f6; color: white; }
+        /* Transicions de seccions */
+        .section-fade { transition: opacity 0.3s ease-in-out; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+    <!-- NAVBAR PRINCIPAL -->
+    <header class="sticky top-0 z-50 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logotip / Títol del Lloc -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchMainTab('inici')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-xl shadow-md">
+                        NT
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">Nucli Tecnològic</span>
+                        <span class="hidden sm:inline-block text-xs font-semibold px-2 py-0.5 ml-2 bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 rounded-full">PAU Història</span>
+                    </div>
+                </div>
+
+                <!-- Menú Desktop -->
+                <nav class="hidden md:flex space-x-1 lg:space-x-4">
+                    <button onclick="switchMainTab('inici')" id="nav-inici" class="nav-btn px-4 py-2 text-sm font-medium transition-all rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <i class="fa-solid fa-house mr-1.5"></i> Inici
+                    </button>
+                    <button onclick="switchMainTab('apunts')" id="nav-apunts" class="nav-btn px-4 py-2 text-sm font-medium transition-all rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <i class="fa-solid fa-book-open mr-1.5"></i> Apunts
+                    </button>
+                    <button onclick="switchMainTab('examens')" id="nav-examens" class="nav-btn px-4 py-2 text-sm font-medium transition-all rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <i class="fa-solid fa-graduation-cap mr-1.5"></i> Exàmens de la fucking sele
+                    </button>
+                    <button onclick="switchMainTab('test')" id="nav-test" class="nav-btn px-4 py-2 text-sm font-medium transition-all rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <i class="fa-solid fa-gamepad mr-1.5"></i> Test de Història
+                    </button>
+                </nav>
+
+                <!-- controls extres (Dark Mode & Mobile Toggle) -->
+                <div class="flex items-center space-x-2">
+                    <button id="theme-toggle" onclick="toggleDarkMode()" class="p-2.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white bg-slate-100 dark:bg-slate-700 focus:outline-none">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:block text-amber-400"></i>
+                    </button>
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Mobil Mobile -->
+        <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 pt-2 pb-4 space-y-1">
+            <button onclick="switchMainTab('inici'); toggleMobileMenu()" class="w-full text-left px-3 py-2 rounded-md font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700">
+                <i class="fa-solid fa-house w-6"></i> Inici
+            </button>
+            <button onclick="switchMainTab('apunts'); toggleMobileMenu()" class="w-full text-left px-3 py-2 rounded-md font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700">
+                <i class="fa-solid fa-book-open w-6"></i> Apunts
+            </button>
+            <button onclick="switchMainTab('examens'); toggleMobileMenu()" class="w-full text-left px-3 py-2 rounded-md font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700">
+                <i class="fa-solid fa-graduation-cap w-6"></i> Exàmens de la fucking sele
+            </button>
+            <button onclick="switchMainTab('test'); toggleMobileMenu()" class="w-full text-left px-3 py-2 rounded-md font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700">
+                <i class="fa-solid fa-gamepad w-6"></i> Test de Història
+            </button>
+        </div>
+    </header>
+
+    <!-- CONTINGUT PRINCIPAL SPA -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ==================== 1. PÀGINA PRINCIPAL / INICI ==================== -->
+        <section id="sec-inici" class="main-section space-y-12">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-8 sm:p-12 shadow-2xl">
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-300 text-xs uppercase font-bold tracking-widest rounded-full border border-blue-400/30">Plataforma d'Estudi Acadèmic</span>
+                    <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-none text-white">
+                        Nucli tecnològic
+                    </h1>
+                    <p class="text-slate-300 text-base sm:text-lg font-light leading-relaxed">
+                        Benvingut al portal interactiu de preparació d'Història d'Espanya per a les Proves d'Accés a la Universitat (PAU). Explora el bloc temàtic central: <strong>La Restauració Borbònica i la seva Crisi (1874-1931)</strong>.
+                    </p>
+                    <div class="pt-4 flex flex-wrap gap-4">
+                        <button onclick="switchMainTab('apunts')" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 font-bold rounded-xl shadow-lg transition-transform active:scale-95 flex items-center gap-2">
+                            <i class="fa-solid fa-book"></i> Anar als Apunts
+                        </button>
+                        <button onclick="switchMainTab('test')" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-600 font-bold rounded-xl shadow-lg transition-transform active:scale-95 flex items-center gap-2">
+                            <i class="fa-solid fa-gamepad text-amber-400"></i> Fer el Test Gamificat
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Galeria d'Imatges Clau -->
+            <div class="space-y-6">
+                <div class="text-center max-w-2xl mx-auto">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Imatges Històriques de Referència</h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">
+                        Moments clau de la història contemporània d'Espanya i les seves relacions internacionals.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Imatge 1: Trobada d'Hendaya -->
+                    <div class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200 dark:border-slate-700 flex flex-col">
+                        <div class="relative overflow-hidden h-64 sm:h-80 bg-slate-200 dark:bg-slate-700">
+                            <img src="https://content-historia.nationalgeographic.com.es/medio/2021/10/15/bienvenida-en-la-estacion-fronteriza-francesa-de-hendaya-entre-franco-y-hitler_7987a212_800x638.jpeg" 
+                                 alt="Trobada a l'estació d'Hendaya entre Franco i Hitler" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                 onerror="this.src='https://placehold.co/800x638/1e293b/ffffff?text=Trobada+d%27Hendaya'">
+                            <span class="absolute top-3 left-3 bg-black/70 backdrop-blur-md text-white text-xs font-medium px-2.5 py-1 rounded-md">
+                                Hendaya, 1940
+                            </span>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-900 dark:text-white">Benvinguda a l'Estació Fronteriza d'Hendaya</h3>
+                                <p class="text-sm text-slate-600 dark:text-slate-300 mt-2">
+                                    Entrevista històrica entre Francisco Franco i Adolf Hitler a l'estació d'Hendaya per negociar la possible participació d'Espanya a la Segona Guerra Mundial.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Imatge 2: Context Històric Espanyol -->
+                    <div class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200 dark:border-slate-700 flex flex-col">
+                        <div class="relative overflow-hidden h-64 sm:h-80 bg-slate-200 dark:bg-slate-700">
+                            <img src="https://images.ecestaticos.com/_LwPzsQIpA8vr3q7dpWwFzuKvEs=/14x0:2252x1678/1200x900/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2F63b%2Ff06%2F986%2F63bf069868473244d475068b5cbe52b1.jpg" 
+                                 alt="Fotografia històrica d'Espanya" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                 onerror="this.src='https://placehold.co/1200x900/1e293b/ffffff?text=Fotografia+Historica'">
+                            <span class="absolute top-3 left-3 bg-black/70 backdrop-blur-md text-white text-xs font-medium px-2.5 py-1 rounded-md">
+                                Arxiu Històric
+                            </span>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-900 dark:text-white">Retrat Social i Polític del Període</h3>
+                                <p class="text-sm text-slate-600 dark:text-slate-300 mt-2">
+                                    Documentació gràfica indispensable per a l'anàlisi de la transició política, l'evolució del règim i els canvis socioeconòmics de l'època.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accesos Ràpids -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="switchMainTab('apunts')" class="cursor-pointer bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1">Apunts de Batxillerat</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Resum estructurat per temes, taules comparatives i desenvolupaments teòrics oficials.</p>
+                </div>
+
+                <div onclick="switchMainTab('examens')" class="cursor-pointer bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-pen-nib"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1">Exàmens PAU Sele</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Sèries A, B i C completament resoltes amb el solucionari oficial integrat.</p>
+                </div>
+
+                <div onclick="switchMainTab('test')" class="cursor-pointer bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1">Test Gamificat i Rànquing</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Posa't a prova amb 30 preguntes, audiofeedback i competeix en el rànquing local.</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== 2. APARAT: APUNTS ==================== -->
+        <section id="sec-apunts" class="main-section hidden space-y-8">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="border-b border-slate-200 dark:border-slate-700 pb-6 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">Document Oficial Unificat</span>
+                        <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">
+                            Apunts d'Història d'Espanya: La Restauració i la Crisi (1874-1931)
+                        </h1>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300">
+                            <i class="fa-solid fa-check-circle mr-1.5"></i> Contrastat per a la Sele
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Índex del Document -->
+                <div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700 mb-8">
+                    <h3 class="font-bold text-sm text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Índex de Continguts</h3>
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                        <li><a href="#ap-1" class="text-blue-600 hover:underline dark:text-blue-400"><i class="fa-solid fa-chevron-right text-xs mr-1"></i> 1. El Sistema Polític de la Restauració (1874-1902)</a></li>
+                        <li><a href="#ap-2" class="text-blue-600 hover:underline dark:text-blue-400"><i class="fa-solid fa-chevron-right text-xs mr-1"></i> 2. L'Oposició Política al Sistema</a></li>
+                        <li><a href="#ap-3" class="text-blue-600 hover:underline dark:text-blue-400"><i class="fa-solid fa-chevron-right text-xs mr-1"></i> 3. La Crisi de 1898 i el Desastre Colonial</a></li>
+                        <li><a href="#ap-4" class="text-blue-600 hover:underline dark:text-blue-400"><i class="fa-solid fa-chevron-right text-xs mr-1"></i> 4. Transformacions Econòmiques i Socials</a></li>
+                    </ul>
+                </div>
+
+                <!-- SECCIÓ 1 -->
+                <div id="ap-1" class="space-y-6 mb-12">
+                    <h2 class="text-2xl font-bold text-blue-600 dark:text-blue-400 border-b border-blue-200 dark:border-blue-900 pb-2">
+                        1. El Sistema Polític de la Restauració (1874-1902)
+                    </h2>
+                    <p class="text-slate-700 dark:text-slate-300 leading-relaxed">
+                        La Restauració Borbònica va ser el període històric inaugurat a finals del 1874 que va restablir la monarquia en la figura d'Alfons XII. Dissenyat principalment per Antonio Cánovas del Castillo, pretenia superar la inestabilitat i els pronunciaments militars del Sexenni Democràtic (1868-1874) mitjançant un model liberal, conservador, civil i oligàrquic basat en la subordinació del poder militar al civil.
+                    </p>
+
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200 mt-4">1.1 Instruments clau per a la instauració del règim</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                        <div class="p-4 bg-slate-50 dark:bg-slate-700/40 rounded-xl border border-slate-200 dark:border-slate-600">
+                            <span class="font-bold text-blue-600 dark:text-blue-400 block mb-1">Manifest de Sandhurst (1 de desembre de 1874)</span>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">Redactat per Cánovas i signat per Alfons XII des d'Anglaterra, presentant-se com un rei constitucional, liberal i catòlic disposat a garantir l'ordre.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-700/40 rounded-xl border border-slate-200 dark:border-slate-600">
+                            <span class="font-bold text-blue-600 dark:text-blue-400 block mb-1">Pronunciament de Sagunt (29 de desembre de 1874)</span>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">El general Martínez Campos es va avançar als plans civils de Cánovas proclamant militarment rei a Alfons XII (de 17 anys).</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-700/40 rounded-xl border border-slate-200 dark:border-slate-600">
+                            <span class="font-bold text-blue-600 dark:text-blue-400 block mb-1">Constitució de 1876</span>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">Text conservador, centralista i flexible. Sobirania compartida Corts-Rei (dret a veto), bicameralisme i confessionalitat catòlica de l'Estat.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-700/40 rounded-xl border border-slate-200 dark:border-slate-600">
+                            <span class="font-bold text-blue-600 dark:text-blue-400 block mb-1">Pacte del Pardo (1885)</span>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">Signat per Cánovas i Sagasta a la mort prematura d'Alfons XII per garantir la regència de Maria Cristina i la continuïtat del bipartidisme.</p>
+                        </div>
+                    </div>
+
+                    <!-- Taula Bipartidisme -->
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200 mt-6 mb-3">1.2 El Bipartidisme i el Torn Pacífic</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-lg">
+                            <thead class="bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white uppercase font-bold text-xs">
+                                <tr>
+                                    <th class="p-3 border-b dark:border-slate-600">Partit Conservador</th>
+                                    <th class="p-3 border-b dark:border-slate-600">Partit Liberal</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                                <tr>
+                                    <td class="p-3"><strong>Líder:</strong> Antonio Cánovas del Castillo</td>
+                                    <td class="p-3"><strong>Líder:</strong> Práxedes Mateo Sagasta (fundat el 1880)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3"><strong>Base Social:</strong> Aristocràcia, alta burgesia, terratinents i jerarquia catòlica.</td>
+                                    <td class="p-3"><strong>Base Social:</strong> Mitjana i petita burgesia, professionals liberals i comerciants.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3"><strong>Ideologia:</strong> Orde social, confessionalitat estricta, proteccionisme econòmic, sufragi censatari i immobilisme.</td>
+                                    <td class="p-3"><strong>Ideologia:</strong> Reformisme social moderat, laicisme relatiu, ampliació de llibertats i sufragi universal masculí (1890).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Fraud Electoral -->
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200 mt-6">1.3 Mecanismes de frau electoral</h3>
+                    <div class="bg-amber-50 dark:bg-amber-950/30 border-l-4 border-amber-500 p-4 rounded-r-xl my-4 space-y-2">
+                        <p class="text-sm"><strong>L'Encasellat:</strong> El Ministeri de la Governació confeccionava prèviament les llistes dels diputats que havien de sortir elegits a cada districte.</p>
+                        <p class="text-sm"><strong>El Caciquisme:</strong> Terratinents i figures d'influència local exercien pressió, xantatge o coercions sobre els electors rurals.</p>
+                        <p class="text-sm"><strong>La Tupamada (Tupinada):</strong> Frau directe que incloïa la falsificació d'actes, compra de vots i el "vot de difunts" (anomenats fantasmes o llàstimes).</p>
+                    </div>
+
+                    <!-- Pacificacio -->
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200 mt-6 mb-3">1.4 La Pacificació dels Conflictes Heretats (1876-1878)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-lg">
+                            <thead class="bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white uppercase font-bold text-xs">
+                                <tr>
+                                    <th class="p-3 border-b dark:border-slate-600">Conflicte</th>
+                                    <th class="p-3 border-b dark:border-slate-600">Desenvolupament i Resolució</th>
+                                    <th class="p-3 border-b dark:border-slate-600">Conseqüències</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                                <tr>
+                                    <td class="p-3 font-semibold">Tercera Guerra Carlina (1872-1876)</td>
+                                    <td class="p-3">La coronació d'Alfons XII va debilitar el suport carlí. Es pacifica Catalunya, Navarra i el País Basc. Carles VII fuig a França.</td>
+                                    <td class="p-3">Fi del règim foral basc (1876), convalidat pels concerts econòmics (1878). Navarra manté l'autonomia fiscal.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold">Guerra dels Deu Anys a Cuba (1868-1878)</td>
+                                    <td class="p-3">El general Martínez Campos signa la Pau de Zanjón (1878), prometent amnistia, representació i abolició de l'esclavitud.</td>
+                                    <td class="p-3">L'incompliment d'acords genera la Guerra Chiquita (1879). L'esclavitud no s'aboleix fins al 1886-1888.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- SECCIÓ 2 -->
+                <div id="ap-2" class="space-y-6 mb-12">
+                    <h2 class="text-2xl font-bold text-blue-600 dark:text-blue-400 border-b border-blue-200 dark:border-blue-900 pb-2">
+                        2. L'Oposició Política al Sistema (Fora del Torn)
+                    </h2>
+                    <ul class="list-disc pl-5 space-y-2 text-slate-700 dark:text-slate-300">
+                        <li><strong>Republicanisme:</strong> Dividit en Possibilistes (Castelar), Centristes (Salmerón), Progressistes (Ruiz Zorrilla) i Federalistes (Pi i Margall). El 1890 es reuneixen en la <em>Unión Republicana</em>.</li>
+                        <li><strong>Moviment Obrer:</strong>
+                            <ul class="list-circle pl-5 mt-1 space-y-1">
+                                <li><em>Socialisme (Marxista):</em> Fundació del PSOE (1879) per Pablo Iglesias i de la UGT (1888). Implantació a Madrid, País Basc i Astúries (via parlamentària).</li>
+                                <li><em>Anarquisme:</em> Majoritari a Catalunya i Andalusia. Rebuig de l'Estat. Vies de sindicalisme directe i episodis de violentisme/terrorisme.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Carlisme:</strong> Reorganitzat en la <em>Comunión Tradicionalista</em> (1890) per defensar el catolicisme i el foralisme per via parlamentària.</li>
+                        <li><strong>Catalanisme Polític:</strong> Transició de la Renaixença a l'acció política. Valentí Almirall impulsa el Centre Català (1882); Prat de la Riba i el Bisbe Torras i Bages lideren el corrent conservador (Bases de Manresa, 1892). Exigeixen proteccionisme econòmic.</li>
+                    </ul>
+                </div>
+
+                <!-- SECCIÓ 3 -->
+                <div id="ap-3" class="space-y-6 mb-12">
+                    <h2 class="text-2xl font-bold text-blue-600 dark:text-blue-400 border-b border-blue-200 dark:border-blue-900 pb-2">
+                        3. La Crisi de 1898 i la Pèrdua Colonial ("El Desastre")
+                    </h2>
+                    <p class="text-slate-700 dark:text-slate-300 leading-relaxed">
+                        L'any 1895 s'inicia la insurrecció cubana amb el <strong>Grito de Baire</strong> (José Martí), agreujat per l'Arancel Cánovas (1891). Espanya respon amb Martínez Campos i després amb el general <strong>Weyler</strong> (dura reconcentració). El febrer de 1898 l'explosió de l'<strong>USS Maine</strong> serveix d'excusa als EUA per declarar la guerra. Després de les derrotes navals a Cavite i Santiago de Cuba, es signa el <strong>Tractat de París (1898)</strong>, perdent Cuba, Puerto Rico i les Filipines.
+                    </p>
+                    <div class="p-4 bg-slate-100 dark:bg-slate-700/50 rounded-xl text-sm space-y-2">
+                        <p><strong>Conseqüències:</strong> Impacte psicològic i moral profund ("decadència nacional"). Impuls del <strong>Regeneracionisme</strong> (Joaquín Costa i Generació del 98) sota el lema "Escola i Despensa". La repatriació de capitals va afavorir inicialment la banca peninsular.</p>
+                    </div>
+                </div>
+
+                <!-- SECCIÓ 4 -->
+                <div id="ap-4" class="space-y-6">
+                    <h2 class="text-2xl font-bold text-blue-600 dark:text-blue-400 border-b border-blue-200 dark:border-blue-900 pb-2">
+                        4. Transformacions Econòmiques i Socials (1898-1931)
+                    </h2>
+                    <div class="space-y-4 text-slate-700 dark:text-slate-300">
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">4.1 Dinàmica Demogràfica</h3>
+                            <p class="text-sm">Creixement de la població de 18,5 milions (1900) a 23,5 milions (1930). Augment de l'esperança de vida de 35 a 50 anys per millores de clavegueram i aigua potable. Èxode rural cap a centres com Sabadell, Terrassa, Barcelona, Madrid i Bilbao.</p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">4.2 L'Agricultura i el Conflicte Rabassaire</h3>
+                            <p class="text-sm">Contrast entre el latifundisme poc productiu del sud i el minifundisme/propietat mitjana mediterrània. La plaga de la <strong>fil·loxera</strong> a Catalunya va destruir la vinya, generant el conflicte dels rabassaires per la rescissió del contracte de <em>Rabassa Morta</em> i la creació de la Unió de Rabassaires.</p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">4.3 Industrialització i Agitació Social</h3>
+                            <p class="text-sm">Consolidació del tèxtil català i la siderúrgia basca. Fundació de la <strong>CNT</strong> (1910) a Barcelona (anarcosindicalisme) i aparició del Partit Republicà Radical d'Alejandro Lerroux (1908).</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ==================== 3. APARTAT: EXÀMENS PAU ==================== -->
+        <section id="sec-examens" class="main-section hidden space-y-8">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="border-b border-slate-200 dark:border-slate-700 pb-4 mb-6">
+                    <h1 class="text-3xl font-black text-slate-900 dark:text-white">Exàmens de la fucking sele</h1>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Recull oficial d'exàmens tipus PAU de la Restauració Borbònica i el seu Solucionari complet.</p>
+                </div>
+
+                <!-- Navegació de Sub-pestanyes -->
+                <div class="flex flex-wrap gap-2 mb-8 border-b border-slate-200 dark:border-slate-700 pb-4">
+                    <button onclick="switchSubTab('ex-a')" id="subnav-ex-a" class="subtab-btn px-4 py-2 text-sm font-bold rounded-xl transition-all bg-slate-100 dark:bg-slate-700">
+                        Examen 1 (Sèrie A)
+                    </button>
+                    <button onclick="switchSubTab('ex-b')" id="subnav-ex-b" class="subtab-btn px-4 py-2 text-sm font-bold rounded-xl transition-all bg-slate-100 dark:bg-slate-700">
+                        Examen 2 (Sèrie B)
+                    </button>
+                    <button onclick="switchSubTab('ex-c')" id="subnav-ex-c" class="subtab-btn px-4 py-2 text-sm font-bold rounded-xl transition-all bg-slate-100 dark:bg-slate-700">
+                        Examen 3 (Sèrie C)
+                    </button>
+                    <button onclick="switchSubTab('ex-sol')" id="subnav-ex-sol" class="subtab-btn px-4 py-2 text-sm font-bold rounded-xl transition-all bg-emerald-600 text-white hover:bg-emerald-700">
+                        <i class="fa-solid fa-key mr-1"></i> Solucions de tots els exàmens
+                    </button>
+                </div>
+
+                <!-- CONTINGUT SUB-PESTANYA 1: EXAMEN A -->
+                <div id="sub-ex-a" class="subtab-content space-y-6">
+                    <div class="p-4 bg-blue-50 dark:bg-blue-950/40 rounded-xl border border-blue-200 dark:border-blue-800">
+                        <h2 class="text-xl font-bold text-blue-900 dark:text-blue-200">EXAMEN 1 (SÈRIE A) - OPCIÓ A: TEXT HISTÒRIC</h2>
+                        <p class="text-xs text-blue-700 dark:text-blue-300 mt-1">Bloc Temàtic: La Restauració Borbònica (1874-1931)</p>
+                    </div>
+
+                    <div class="p-4 italic bg-slate-50 dark:bg-slate-900 rounded-xl border-l-4 border-blue-500 text-sm text-slate-700 dark:text-slate-300">
+                        «Don Alfonso XII de Borbón, por la gracia de Dios Rey de España... Sabed: Que en unión y de acuerdo con las Cortes del Reino actualmente reunidas, hemos venido en decretar y sancionar la siguiente Constitución: <br><br>
+                        Art. 11. La religión Católica, Apostólica, Romana, es la del Estado. La Nación se obliga a mantener el culto y sus ministros...<br>
+                        Art. 18. La potestad de hacer las leyes reside en las Cortes con el Rey.<br>
+                        Art. 19. Las Cortes se componen de dos Cuerpos Colegisladores: el Senado y el Congreso...»
+                        <p class="mt-2 text-right font-bold not-italic text-xs">— Constitució de la Monarquia Espanyola (30 de juny de 1876)</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-blue-600 dark:text-blue-400">Exercici 1 [2,5 punts]</h3>
+                            <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">a) Descriviu el tipus de font, la naturalesa i context històric de la Constitució de 1876 (1 punt).<br>b) Resumiu les idees principals identificant la sobirania i la religió (1,5 punts).</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-blue-600 dark:text-blue-400">Exercici 2 [2,5 punts]</h3>
+                            <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">Expliqueu el funcionament del sistema polític canovista: bipartidisme, partits dinàstics, torn pacífic i Pacte del Pardo (1885).</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-blue-600 dark:text-blue-400">Exercici 3 [2,5 punts]</h3>
+                            <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">Analitzeu els mecanismes de frau electoral: encasellat, caciquisme i tupinada (vot de difunts).</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-blue-600 dark:text-blue-400">Exercici 4 [2,5 punts]</h3>
+                            <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">Expliqueu la pacificació militar (1876-1878): fi de la Tercera Guerra Carlina i Pau de Zanjón a Cuba.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTINGUT SUB-PESTANYA 2: EXAMEN B -->
+                <div id="sub-ex-b" class="subtab-content hidden space-y-6">
+                    <div class="p-4 bg-indigo-50 dark:bg-indigo-950/40 rounded-xl border border-indigo-200 dark:border-indigo-800">
+                        <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-200">EXAMEN 2 (SÈRIE B) - OPCIÓ B: DOCUMENT I DESENVOLUPAMENT</h2>
+                        <p class="text-xs text-indigo-700 dark:text-indigo-300 mt-1">Bloc Temàtic: Crisi de 1898 i Regeneracionisme</p>
+                    </div>
+
+                    <div class="p-4 italic bg-slate-50 dark:bg-slate-900 rounded-xl border-l-4 border-indigo-500 text-sm text-slate-700 dark:text-slate-300">
+                        «Para regenerar a España no bastan los paños calientes ni las buenas palabras. Necesitamos dos cosas fundamentales: Escuela y Despensa. Es urgente acabar con el caciquismo, alfabetizar a la población campesina...»
+                        <p class="mt-2 text-right font-bold not-italic text-xs">— Joaquín Costa, Oligarquía y Caciquismo (1901)</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-indigo-600 dark:text-indigo-400">Exercici 1 [2,5 punts]</h3>
+                            <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">a) Identifiqueu la autoritat i concepte de Regeneracionisme ('Escola i Despensa').<br>b) Quines van ser les conseqüències morals i polítiques de la Crisi de 1898?</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-indigo-600 dark:text-indigo-400">Exercici 2 [2,5 punts]</h3>
+                            <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">Desenvolupeu la Guerra de Cuba i Filipines (1895-1898): Grito de Baire, Weyler, USS Maine i Tractat de París.</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-indigo-600 dark:text-indigo-400">Exercici 3 [2,5 punts]</h3>
+                            <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">Analitzeu les forces d'oposició fora del torn: corrents del republicanisme i Comunión Tradicionalista carlina.</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-indigo-600 dark:text-indigo-400">Exercici 4 [2,5 punts]</h3>
+                            <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">Expliqueu el naixement del Catalanisme Polític: Valentí Almirall, Enric Prat de la Riba, Bases de Manresa (1892) i el Proteccionisme.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTINGUT SUB-PESTANYA 3: EXAMEN C -->
+                <div id="sub-ex-c" class="subtab-content hidden space-y-6">
+                    <div class="p-4 bg-purple-50 dark:bg-purple-950/40 rounded-xl border border-purple-200 dark:border-purple-800">
+                        <h2 class="text-xl font-bold text-purple-900 dark:text-purple-200">EXAMEN 3 (SÈRIE C) - SOCIOECONOMIA I CONFLICTIVITAT</h2>
+                        <p class="text-xs text-purple-700 dark:text-purple-300 mt-1">Bloc Temàtic: Transformacions del Segle XX</p>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm border border-slate-200 dark:border-slate-700 rounded-lg">
+                            <thead class="bg-slate-100 dark:bg-slate-700">
+                                <tr>
+                                    <th class="p-2">Indicador / Any</th>
+                                    <th class="p-2">Any 1900</th>
+                                    <th class="p-2">Any 1930</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-t dark:border-slate-700"><td class="p-2">Població total d'Espanya</td><td class="p-2">18,5 milions</td><td class="p-2">23,5 milions</td></tr>
+                                <tr class="border-t dark:border-slate-700"><td class="p-2">Esperança de vida</td><td class="p-2">35 anys</td><td class="p-2">50 anys</td></tr>
+                                <tr class="border-t dark:border-slate-700"><td class="p-2">Població de Sabadell</td><td class="p-2">23.000 hab.</td><td class="p-2">38.000 hab. (1920)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-purple-600 dark:text-purple-400">Exercici 1 [2,5 punts]</h3>
+                            <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">Descriviu la transició demogràfica, èxode rural cap a Sabadell/Terrassa/Barcelona i l'emigració cap a Amèrica del Sud.</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-purple-600 dark:text-purple-400">Exercici 2 [2,5 punts]</h3>
+                            <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">Compareu el latifundisme del sud amb el minifundisme de Galícia i l'agricultura llevantina mediterrània.</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-purple-600 dark:text-purple-400">Exercici 3 [2,5 punts]</h3>
+                            <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">Expliqueu la plaga de la fil·loxera, el contracte de Rabassa Morta i la Unió de Rabassaires.</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-purple-600 dark:text-purple-400">Exercici 4 [2,5 punts]</h3>
+                            <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">Analitzeu el moviment obrer (PSOE/UGT vs CNT anarquista) i el Partit Republicà Radical de Lerroux.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTINGUT SUB-PESTANYA 4: SOLUCIONARI COMPLET -->
+                <div id="sub-ex-sol" class="subtab-content hidden space-y-8">
+                    <div class="p-4 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800">
+                        <h2 class="text-xl font-bold text-emerald-900 dark:text-emerald-200"><i class="fa-solid fa-check-double mr-2"></i>SOLUCIONARI PAU I CRITERIS OFICIALS DE CORRECCIÓ</h2>
+                        <p class="text-xs text-emerald-700 dark:text-emerald-300 mt-1">Pautes oficials resoltes per als Exàmens 1, 2 i 3</p>
+                    </div>
+
+                    <!-- Solucions Examen 1 -->
+                    <div class="space-y-4">
+                        <h3 class="font-extrabold text-lg text-slate-900 dark:text-white border-b pb-1">Solucions Examen 1 (Sèrie A)</h3>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                            <p><strong>Ex 1:</strong> Font primària jurídico-política (1876). Estableix sobirania compartida Rei-Corts i confessionalitat catòlica de l'Estat amb tolerància de culte privat.</p>
+                            <p><strong>Ex 2:</strong> Bipartidisme Cánovas (Conservador) - Sagasta (Liberal) amb alternança mitjançant el Torn Pacífic i formalitzat al Pacte del Pardo (1885).</p>
+                            <p><strong>Ex 3:</strong> Sistema invertit: Encasellat des del Ministeri, pressió del Cacic local i tupinada directa (vot de fantasmes/morts).</p>
+                            <p><strong>Ex 4:</strong> Fi de la 3a Guerra Carlina (1876) suprimeix furs bascos (concerts econòmics 1878). La Pau de Zanjón (1878) pacifica temporalment Cuba.</p>
+                        </div>
+                    </div>
+
+                    <!-- Solucions Examen 2 -->
+                    <div class="space-y-4">
+                        <h3 class="font-extrabold text-lg text-slate-900 dark:text-white border-b pb-1">Solucions Examen 2 (Sèrie B)</h3>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                            <p><strong>Ex 1:</strong> Joaquín Costa reclama "Escola i Despensa" (alfabetització i regadius). El Desastre del 98 provoca commoció moral i la Generació del 98.</p>
+                            <p><strong>Ex 2:</strong> Grito de Baire (1895), reconcentració de Weyler, voladura de l'USS Maine i signatura del Tractat de París (cedint Cuba, Puerto Rico i Filipines).</p>
+                            <p><strong>Ex 3:</strong> Oposició: Republicans (Possibilistes, Federalistes) reunits en la Unión Republicana (1890). Carlisme en la Comunión Tradicionalista.</p>
+                            <p><strong>Ex 4:</strong> Centre Català d'Almirall (1882) cap a les Bases de Manresa (1892) de Prat de la Riba. Defensa del proteccionisme per al tèxtil.</p>
+                        </div>
+                    </div>
+
+                    <!-- Solucions Examen 3 -->
+                    <div class="space-y-4">
+                        <h3 class="font-extrabold text-lg text-slate-900 dark:text-white border-b pb-1">Solucions Examen 3 (Sèrie C)</h3>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                            <p><strong>Ex 1:</strong> Transició demogràfica (esperança de vida puja de 35 a 50 anys). Èxode rural cap a Sabadell (passa de 23k a 38k hab) i emigració a Amèrica.</p>
+                            <p><strong>Ex 2:</strong> Latifundis al sud (jornalers, baixa productivitat) vs petita/mitjana propietat mediterrània d'exportació.</p>
+                            <p><strong>Ex 3:</strong> La fil·loxera va matar els ceps, provocant la fi dels contractes de Rabassa Morta i la creació de la Unió de Rabassaires.</p>
+                            <p><strong>Ex 4:</strong> PSOE/UGT (reformista) vs CNT anarquista (1910, acció directa). Alejandro Lerroux capta la classe treballadora amb un discurs anticlerical.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ==================== 4. APARTAT: TEST INTERACTIU ==================== -->
+        <section id="sec-test" class="main-section hidden space-y-8">
+            <!-- Capçalera Test -->
+            <div class="bg-gradient-to-r from-slate-900 to-indigo-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-800">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div>
+                        <span class="px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold uppercase rounded-full">Test Gamificat</span>
+                        <h1 class="text-3xl font-black mt-2">Test d'Història d'Espanya</h1>
+                        <p class="text-slate-300 text-sm mt-1">La Restauració i la Crisi (1874-1931) — 30 Preguntes Oficials PAU</p>
+                    </div>
+
+                    <!-- Panel de Puntuació / Usuari -->
+                    <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex items-center gap-4 w-full md:w-auto justify-between">
+                        <div>
+                            <span class="text-xs text-slate-300 block">Estudiant:</span>
+                            <input type="text" id="player-name" placeholder="Escriu el teu nom..." class="bg-slate-800/80 text-white text-sm px-3 py-1.5 rounded-lg border border-slate-600 focus:outline-none focus:border-blue-400 w-36 sm:w-48">
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-300 block">Estat:</span>
+                            <span id="quiz-status" class="font-bold text-amber-400 text-sm">En curs...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Barra de Progrés -->
+                <div class="mt-6">
+                    <div class="flex justify-between text-xs text-slate-300 mb-1 font-semibold">
+                        <span>Progrés de respostes</span>
+                        <span id="progress-text">0 / 30 respostes</span>
+                    </div>
+                    <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700">
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Qüestionari i Leaderboard Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Columna Preguntes (2 col) -->
+                <div class="lg:col-span-2 space-y-6">
+                    <form id="quiz-form" class="space-y-6">
+                        <div id="questions-container" class="space-y-6">
+                            <!-- Les preguntes es generen dinàmicament per JS -->
+                        </div>
+
+                        <div class="pt-4 flex items-center justify-center">
+                            <button type="button" onclick="evaluateQuiz()" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-lg rounded-2xl shadow-xl hover:shadow-2xl transition-all active:scale-95 flex items-center justify-center gap-3">
+                                <i class="fa-solid fa-check-circle text-xl"></i> Corregir el Test i Guardar Nota
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Caixas de Resultat -->
+                    <div id="result-box" class="hidden bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-2xl text-center space-y-4">
+                        <div class="w-20 h-20 mx-auto rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-3xl">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <h2 class="text-3xl font-black text-slate-900 dark:text-white">Resultat del Test</h2>
+                        <div id="score-display" class="text-5xl font-black text-blue-600 dark:text-blue-400">0 / 30</div>
+                        <p id="feedback-message" class="text-slate-600 dark:text-slate-300 text-base max-w-md mx-auto"></p>
+                    </div>
+                </div>
+
+                <!-- Columna Leaderboard (1 col) -->
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm sticky top-24">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-4 mb-4">
+                            <h3 class="font-extrabold text-lg flex items-center gap-2">
+                                <i class="fa-solid fa-ranking-star text-amber-500"></i> Rànquing d'Estudiants
+                            </h3>
+                            <button onclick="clearLeaderboard()" class="text-xs text-red-500 hover:underline">Netejar</button>
+                        </div>
+
+                        <div id="leaderboard-list" class="space-y-3">
+                            <p class="text-xs text-slate-400 text-center py-4">Encara no hi ha puntuacions registrades. Sigues el primer!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p class="text-sm font-semibold text-slate-600 dark:text-slate-400">
+                Nucli tecnològic &copy; 2026 — Plataforma d'Estudi per a les PAU
+            </p>
+            <p class="text-xs text-slate-400">
+                Desenvolupat per a la preparació intensiva d'Història d'Espanya (1874-1931).
+            </p>
+        </div>
+    </footer>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        // ==================== AUDIO SYNTHESIS (Web Audio API) ====================
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioContext();
+            }
+        }
+
+        function playSound(type) {
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+
+                if (type === 'correct') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(587.33, now); // D5
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.2); // A5
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                } else if (type === 'incorrect') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, now); // A3
+                    osc.frequency.exponentialRampToValueAtTime(110, now + 0.3); // A2
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'victory') {
+                    // Arpeggi d'èxit
+                    const notes = [523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, idx) => {
+                        const oscN = audioCtx.createOscillator();
+                        const gainN = audioCtx.createGain();
+                        oscN.connect(gainN);
+                        gainN.connect(audioCtx.destination);
+                        oscN.frequency.value = freq;
+                        gainN.gain.setValueAtTime(0.15, now + idx * 0.1);
+                        gainN.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.1 + 0.3);
+                        oscN.start(now + idx * 0.1);
+                        oscN.stop(now + idx * 0.1 + 0.3);
+                    });
+                }
+            } catch (e) {
+                console.log('Audio error:', e);
+            }
+        }
+
+        // ==================== NAVEGACIÓ SPA PRINCIPAL ====================
+        function switchMainTab(tabId) {
+            document.querySelectorAll('.main-section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-blue-600', 'dark:text-blue-400', 'font-bold');
+            });
+
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('text-blue-600', 'dark:text-blue-400', 'font-bold');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // ==================== SUB-PESTANYES EXÀMENS ====================
+        function switchSubTab(subId) {
+            document.querySelectorAll('.subtab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById(`sub-${subId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.subtab-btn').forEach(b => {
+                b.classList.remove('subtab-active');
+            });
+
+            const activeSub = document.getElementById(`subnav-${subId}`);
+            if (activeSub) {
+                activeSub.classList.add('subtab-active');
+            }
+        }
+
+        // ==================== PREGUNTES DEL TEST ====================
+        const quizData = [
+            { id: 1, q: "1. Quin any es va inaugurar la Restauració Borbònica amb el restabliment de la monarquia?", opts: ["1868", "1874", "1876", "1898"], ans: "b" },
+            { id: 2, q: "2. Qui va ser el principal dissenyador del sistema polític de la Restauració?", opts: ["Práxedes Mateo Sagasta", "Antonio Cánovas del Castillo", "General Martínez Campos", "Joaquín Costa"], ans: "b" },
+            { id: 3, q: "3. Quina data porta el Manifest de Sandhurst redactat per Cánovas i signat per Alfons XII?", opts: ["1 de desembre de 1874", "29 de desembre de 1874", "15 de gener de 1875", "30 de novembre de 1876"], ans: "a" },
+            { id: 4, q: "4. Quin general es va avançar als plans civils proclamant militarment rei a Alfons XII a Sagunt?", opts: ["General Weyler", "General Primo de Rivera", "General Martínez Campos", "General Espartero"], ans: "c" },
+            { id: 5, q: "5. Quin caràcter tenia la Constitució de 1876?", opts: ["Progressista i laica", "Conservador, centralista i flexible", "Federal i republicana", "Absolutista i foral"], ans: "b" },
+            { id: 6, q: "6. Quin objectiu principal tenia el Pacte del Pardo (1885)?", opts: ["Posar fi a la Tercera Guerra Carlina", "Garantir la regència de Maria Cristina i la continuïtat del bipartidisme", "Signar la pau amb els rebels cubans", "Proclamar el sufragi universal masculí"], ans: "b" },
+            { id: 7, q: "7. Quin d'aquests trets defineix la ideologia del Partit Liberal liderat per Sagasta?", opts: ["Confessionalitat estricta i proteccionisme", "Reformisme social moderat, laicisme relatiu i ampliació de llibertats", "Defensa del tradicionalisme catòlic i els furs", "Rebuig frontal a l'Estat i acció directa"], ans: "b" },
+            { id: 8, q: "8. En quin any es va aprovar el sufragi universal masculí sota el govern liberal?", opts: ["1876", "1885", "1890", "1898"], ans: "c" },
+            { id: 9, q: "9. Com s'anomenava el mecanisme de frau electoral on el Ministeri de la Governació feia la llista prèvia de diputats?", opts: ["Caciquisme", "L'Encasellat", "La Tupamada", "El Torn Pacífic"], ans: "b" },
+            { id: 10, q: "10. Què era la 'Tupamada'?", opts: ["La coacció directa sobre els jornalers rurals", "El pacte entre conservadors i liberals", "Frau directe com falsificació d'actes, compra de vots i el vot de difunts", "L'elecció del president per part del Rei"], ans: "c" },
+            { id: 11, q: "11. Quin període va abraçar la Tercera Guerra Carlina?", opts: ["1868-1878", "1872-1876", "1879-1885", "1895-1898"], ans: "b" },
+            { id: 12, q: "12. Quina conseqüència va tenir la fi de la Tercera Guerra Carlina per al País Basc l'any 1876?", opts: ["Es va mantenir el règim foral sense canvis", "La fi del règim foral basc, substituït pels concerts econòmics (1878)", "La creació immediata del PNB", "La pèrdua de l'autonomia fiscal de Navarra"], ans: "b" },
+            { id: 13, q: "13. Quin tractat o acord signat per Martínez Campos va posar fi a la Guerra dels Deu Anys a Cuba (1868-1878)?", opts: ["Tractat de París", "Pau de Zanjón", "Pacte del Pardo", "Manifest de Sandhurst"], ans: "b" },
+            { id: 14, q: "14. En quin període d'anys es va abolir finalment l'esclavitud a les colònies espanyoles?", opts: ["1874-1876", "1878-1880", "1886-1888", "1895-1898"], ans: "c" },
+            { id: 15, q: "15. En quina organització es van agrupar els carlins a partir de 1890 per defensar la seva causa per via parlamentària?", opts: ["Unión Republicana", "Comunión Tradicionalista", "Lliga Regionalista", "Centre Català"], ans: "b" },
+            { id: 16, q: "16. Quin any va ser fundat el PSOE per Pablo Iglesias?", opts: ["1874", "1879", "1888", "1890"], ans: "b" },
+            { id: 17, q: "17. Quin any es va fundar el sindicat socialista UGT?", opts: ["1879", "1882", "1888", "1910"], ans: "c" },
+            { id: 18, q: "18. On tenia una implantació majoritària el moviment anarquista?", opts: ["Madrid, País Basc i Astúries", "Catalunya i Andalusia", "Galícia i Castella", "Aragó i Navarra"], ans: "b" },
+            { id: 19, q: "19. Qui va impulsar el Centre Català l'any 1882 com a part del catalanisme polític progressista?", opts: ["Enric Prat de la Riba", "Valentí Almirall", "Bisbe Torras i Bages", "Francesc Pi i Margall"], ans: "b" },
+            { id: 20, q: "20. Quin document fonamental del catalanisme conservador es va redactar el 1892?", opts: ["Memorial de Greuges", "Bases de Manresa", "Manifest de Sandhurst", "Estatut de Núria"], ans: "b" },
+            { id: 21, q: "21. Quin esdeveniment de 1895 va marcar l'inici de la nova insurrecció cubana?", opts: ["L'explosió del cuirassat USS Maine", "El Grito de Baire", "La signatura del Tractat de París", "L'Arancel Cánovas"], ans: "b" },
+            { id: 22, q: "22. Quin general espanyol va aplicar una dura política de reconcentració de camperols a Cuba?", opts: ["General Martínez Campos", "General Weyler", "General Cánovas", "General Primo de Rivera"], ans: "b" },
+            { id: 23, q: "23. Quin va ser el casus belli utilitzat pels EUA el febrer de 1898 per declarar la guerra a Espanya?", opts: ["La mort de José Martí", "L'aplicació de l'Arancel Cánovas", "L'explosió del cuirassat USS Maine al port de l'Havana", "La batalla de Cavite"], ans: "c" },
+            { id: 24, q: "24. Quin tractat signat al desembre de 1898 va posar fi a la guerra i va suposar la pèrdua de Cuba, Puerto Rico i Filipines?", opts: ["Tractat de Madrid", "Tractat de París", "Pau de Zanjón", "Acord de l'Havana"], ans: "b" },
+            { id: 25, q: "25. Quin moviment intel·lectual i polític, liderat per figures com Joaquín Costa, va sorgir arran del 'Desastre del 98'?", opts: ["Federalisme", "Regeneracionisme", "Carlisme", "Possibilisme"], ans: "b" },
+            { id: 26, q: "26. A quina xifra va augmentar la població espanyola entre el 1900 i el 1930?", opts: ["De 10 a 15 milions", "De 18,5 a 23,5 milions", "De 25 a 30 milions", "De 15 a 20 milions"], ans: "b" },
+            { id: 27, q: "27. Quina plaga agrícola va destruir les vinyes a Catalunya a finals del segle XIX?", opts: ["El fongs de la patata", "La fil·loxera", "La llagosta mediterrània", "El mildiu"], ans: "b" },
+            { id: 28, q: "28. Quin conflicte social al camp català es va generar arran de la mort dels ceps de la 'Rabassa Morta'?", opts: ["El Conflicte dels Rabassaires", "La Revolta dels Remences", "Vaga General de 1917", "Tancament de Caixes"], ans: "a" },
+            { id: 29, q: "29. Quin any es va fundar a Barcelona el sindicat anarcosindicalista CNT?", opts: ["1888", "1908", "1910", "1923"], ans: "c" },
+            { id: 30, q: "30. Qui va fundar el Partit Republicà Radical el 1908, caracteritzat pel seu discurs anticlerical i demagògic?", opts: ["Emilio Castelar", "Alejandro Lerroux", "Nicolás Salmerón", "Ruiz Zorrilla"], ans: "b" }
+        ];
+
+        // Carregar preguntes al DOM
+        function renderQuiz() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            quizData.forEach((item, index) => {
+                const letterCodes = ['a', 'b', 'c', 'd'];
+                const card = document.createElement('div');
+                card.id = `qcard-${item.id}`;
+                card.className = "bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-all";
+
+                let optionsHtml = '';
+                item.opts.forEach((optText, oIdx) => {
+                    const code = letterCodes[oIdx];
+                    optionsHtml += `
+                        <label class="option-lbl flex items-center p-3 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                            <input type="radio" name="q${item.id}" value="${code}" onchange="updateQuizProgress()" class="w-4 h-4 text-blue-600 focus:ring-blue-500 mr-3">
+                            <span class="text-sm font-medium text-slate-700 dark:text-slate-200">${optText}</span>
+                        </label>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <h4 class="font-bold text-slate-900 dark:text-white text-base mb-4">${item.q}</h4>
+                    <div class="space-y-2 font-sans">${optionsHtml}</div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function updateQuizProgress() {
+            let answered = 0;
+            quizData.forEach(item => {
+                if (document.querySelector(`input[name="q${item.id}"]:checked`)) {
+                    answered++;
+                }
+            });
+
+            const pct = (answered / quizData.length) * 100;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+            document.getElementById('progress-text').textContent = `${answered} / ${quizData.length} respostes`;
+        }
+
+        function evaluateQuiz() {
+            let score = 0;
+            let answeredCount = 0;
+
+            quizData.forEach(item => {
+                const card = document.getElementById(`qcard-${item.id}`);
+                const selected = document.querySelector(`input[name="q${item.id}"]:checked`);
+
+                // Neteja previa
+                card.classList.remove('border-emerald-500', 'bg-emerald-50/20', 'border-red-500', 'bg-red-50/20');
+
+                if (selected) {
+                    answeredCount++;
+                    if (selected.value === item.ans) {
+                        score++;
+                        card.classList.add('border-emerald-500', 'bg-emerald-50/20');
+                    } else {
+                        card.classList.add('border-red-500', 'bg-red-50/20');
+                    }
+                } else {
+                    card.classList.add('border-red-500', 'bg-red-50/20');
+                }
+            });
+
+            // Reprodueix so segons nota
+            if (score >= 25) {
+                playSound('victory');
+            } else if (score >= 15) {
+                playSound('correct');
+            } else {
+                playSound('incorrect');
+            }
+
+            // Mostrar Resultat
+            const resBox = document.getElementById('result-box');
+            const scoreDisp = document.getElementById('score-display');
+            const feedback = document.getElementById('feedback-message');
+
+            scoreDisp.textContent = `${score} / ${quizData.length}`;
+
+            const pct = (score / quizData.length) * 100;
+            if (pct >= 90) {
+                feedback.textContent = "Excel·lent! Domines perfectament el tema de la Restauració. Nota d'Excel·lent!";
+            } else if (pct >= 70) {
+                feedback.textContent = "Molt bé! Tens un bon coneixement del context històric i les dates clau.";
+            } else if (pct >= 50) {
+                feedback.textContent = "Aprovat. Cal revisar alguns conceptes o autors per assegurar la teva millor nota a la Sele.";
+            } else {
+                feedback.textContent = "Cal repassar els apunts! Torna a llegir la secció d'Apunts i torna-ho a intentar.";
+            }
+
+            resBox.classList.remove('hidden');
+            resBox.scrollIntoView({ behavior: 'smooth' });
+
+            // Desar a Leaderboard Local
+            const playerNameInput = document.getElementById('player-name');
+            const pName = playerNameInput.value.trim() || 'Estudiant Anònim';
+            saveScore(pName, score);
+        }
+
+        // ==================== LEADERBOARD LOCALSTORAGE ====================
+        function getLeaderboard() {
+            const data = localStorage.getItem('historia_pau_ranks');
+            return data ? JSON.parse(data) : [];
+        }
+
+        function saveScore(name, score) {
+            const ranks = getLeaderboard();
+            ranks.push({ name, score, date: new Date().toLocaleDateString() });
+            ranks.sort((a, b) => b.score - a.score);
+            // Mantenir top 10
+            const top = ranks.slice(0, 10);
+            localStorage.setItem('historia_pau_ranks', JSON.stringify(top));
+            renderLeaderboard();
+        }
+
+        function clearLeaderboard() {
+            localStorage.removeItem('historia_pau_ranks');
+            renderLeaderboard();
+        }
+
+        function renderLeaderboard() {
+            const list = document.getElementById('leaderboard-list');
+            const ranks = getLeaderboard();
+
+            if (ranks.length === 0) {
+                list.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">Encara no hi ha puntuacions registrades. Sigues el primer!</p>';
+                return;
+            }
+
+            list.innerHTML = '';
+            ranks.forEach((r, idx) => {
+                let badgeColor = 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300';
+                if (idx === 0) badgeColor = 'bg-amber-100 text-amber-800 font-bold border border-amber-300';
+                if (idx === 1) badgeColor = 'bg-slate-200 text-slate-800 font-bold';
+                if (idx === 2) badgeColor = 'bg-amber-900/20 text-amber-600 font-bold';
+
+                const item = document.createElement('div');
+                item.className = `flex items-center justify-between p-3 rounded-xl ${badgeColor} text-xs`;
+                item.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="w-5 font-bold text-center">${idx + 1}.</span>
+                        <span class="font-semibold text-sm truncate max-w-[100px] sm:max-w-[120px]">${r.name}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-black text-sm">${r.score}/30</span>
+                        <span class="text-[10px] opacity-70">${r.date}</span>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        // INIT
+        window.onload = function() {
+            switchMainTab('inici');
+            switchSubTab('ex-a');
+            renderQuiz();
+            renderLeaderboard();
+        };
+    </script>
+</body>
+</html>
